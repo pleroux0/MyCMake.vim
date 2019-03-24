@@ -20,14 +20,14 @@ matrix:
         - neovim
     env:
     - VIM=nvim
-  - os: macos
+  - os: osx
     addons:
       homebrew:
         packages:
         - vim
     env:
     - VIM=vim
-  - os: macos
+  - os: osx
     addons:
       homebrew:
         packages:
