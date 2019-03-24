@@ -1,0 +1,197 @@
+" CMakeClearVars
+" --------------
+
+Execute (Clear CMake variables):
+  let t:cmake_build_dir="a"
+  let t:cmake_source_dir="a"
+  let t:cmake_toolchain="a"
+  let t:cmake_cxx_compiler="a"
+  let t:cmake_c_compiler="a"
+  let t:cmake_cxx_flags="a"
+  let t:cmake_c_flags="a"
+  let t:cmake_generator="a"
+  let t:cmake_build_type="a"
+  let t:cmake_install_prefix="a"
+  let t:cmake_export_compile_commands="a"
+  let t:cmake_user_arguments="a"
+  CMakeClearVars
+
+Then (Vars shouldn't exist):
+  Assert !exists("t:cmake_build_dir")
+  Assert !exists("t:cmake_source_dir")
+  Assert !exists("t:cmake_toolchain")
+  Assert !exists("t:cmake_cxx_compiler")
+  Assert !exists("t:cmake_c_compiler")
+  Assert !exists("t:cmake_cxx_flags")
+  Assert !exists("t:cmake_c_flags")
+  Assert !exists("t:cmake_generator")
+  Assert !exists("t:cmake_build_type")
+  Assert !exists("t:cmake_install_prefix")
+  Assert !exists("t:cmake_export_compile_commands")
+  Assert !exists("t:cmake_user_arguments")
+  AssertEqual MyCMake#GetArguments(), []
+
+" MyCMake#GetArguments
+" -------------
+Execute (CMake arguments cxx compiler):
+  CMakeClearVars
+  let t:cmake_cxx_compiler = "cxx"
+
+Then:
+  AssertEqual mycmake#get_arguments(),["-DCMAKE_CXX_COMPILER=cxx"]
+
+Execute (CMake arguments c compiler):
+  CMakeClearVars
+  let t:cmake_c_compiler = "cc"
+
+Then:
+  AssertEqual mycmake#get_arguments(), ["-DCMAKE_C_COMPILER=cc"]
+
+Execute (CMake arguments cxx cflags string):
+  CMakeClearVars
+  let t:cmake_cxx_flags = "cxx_flags"
+
+Then:
+  AssertEqual mycmake#get_arguments(), ["-DCMAKE_CXX_FLAGS=\"cxx_flags\""]
+
+Execute (CMake arguments c cflags string):
+  CMakeClearVars
+  let t:cmake_c_flags = "c_flags"
+
+Then:
+  AssertEqual mycmake#get_arguments(), ["-DCMAKE_C_FLAGS=\"c_flags\""]
+
+Execute (CMake arguments cxx cflags list):
+  CMakeClearVars
+  let t:cmake_cxx_flags = ["cxx_flags", "other_flags"]
+
+Then:
+  AssertEqual mycmake#get_arguments(), ["-DCMAKE_CXX_FLAGS=\"cxx_flags other_flags\""]
+
+Execute (CMake arguments c cflags list):
+  CMakeClearVars
+  let t:cmake_c_flags = ["c_flags", "other_flags"]
+
+Then:
+  AssertEqual mycmake#get_arguments(), ["-DCMAKE_C_FLAGS=\"c_flags other_flags\""]
+
+Execute (CMake arguments generator):
+  CMakeClearVars
+  let t:cmake_generator = "gen"
+
+Then:
+  AssertEqual mycmake#get_arguments(), ["-G", "\"gen\""]
+
+Execute (CMake arguments build type):
+  CMakeClearVars
+  let t:cmake_build_type = "bt"
+
+Then:
+  AssertEqual mycmake#get_arguments(), ["-DCMAKE_BUILD_TYPE=bt"]
+
+Execute (CMake arguments install prefix):
+  CMakeClearVars
+  let t:cmake_install_prefix = "ip"
+
+Then:
+  AssertEqual mycmake#get_arguments(), ["-DCMAKE_INSTALL_PREFIX=ip"]
+
+Execute (CMake arguments export compile commands false):
+  CMakeClearVars
+  let t:cmake_export_compile_commands = 0
+
+Then:
+  AssertEqual mycmake#get_arguments(), []
+
+Execute (CMake arguments export compile command true):
+  CMakeClearVars
+  let t:cmake_export_compile_commands = 1
+
+Then:
+  AssertEqual mycmake#get_arguments(), ["-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"]
+
+Execute (CMake arguments user string):
+  CMakeClearVars
+  let t:cmake_user_arguments = "ua"
+
+Then:
+  AssertEqual mycmake#get_arguments(), ["ua"]
+
+Execute (CMake arguments user list):
+  CMakeClearVars
+  let t:cmake_user_arguments = ["u", "a"]
+
+Then:
+  AssertEqual mycmake#get_arguments(), ["u", "a"]
+
+" CMake#IsCMakeProject
+" --------------------
+Execute (CMake is project no variables):
+  CMakeClearVars
+
+Then:
+  Assert !MyCMake#IsCMakeProject()
+
+Execute (CMake is project only source):
+  CMakeClearVars
+  let t:cmake_source_dir = "tests/case/cmake_good"
+
+Then:
+  Assert !MyCMake#IsCMakeProject()
+
+Execute (CMake is project only build):
+  CMakeClearVars
+  let t:cmake_build_dir = "build/is_cmake_project_only_build"
+
+Then:
+  Assert !MyCMake#IsCMakeProject()
+
+Execute (CMake is project no CMakeLists.txt):
+  CMakeClearVars
+  let t:cmake_source_dir = "tests/case/empty"
+  let t:cmake_build_dir = "build/is_cmake_project_no_cmakelists_txt"
+
+Then:
+  Assert !MyCMake#IsCMakeProject()
+
+Execute (CMake is project valid):
+  CMakeClearVars
+  let t:cmake_source_dir = "tests/case/cmake_good"
+  let t:cmake_build_dir = "build/is_cmake_project_valid"
+
+Then:
+  Assert MyCMake#IsCMakeProject()
+
+" CMakeConfigure
+" --------------
+Execute (CMake configure not a project):
+  CMakeClearVars
+  let t:cmake_build_dir = "build/cmake_configure_not_a_project"
+  let t:cmake_source_dir = "test/case/empty"
+
+Then:
+  Assert !MyCMake#IsCMakeProject()
+  Assert !MyCMake#Configure()
+  Assert !filereadable(t:cmake_build_dir . "/CMakeCache.txt")
+  "Assert !MyCMake#UpdateCompilerCommands()
+
+Execute (CMake configure bad):
+  CMakeClearVars
+  let t:cmake_build_dir = "build/cmake_configure_bad"
+  let t:cmake_source_dir = "tests/case/cmake_bad"
+
+Then:
+  Assert !MyCMake#Configure()
+  Assert filereadable(t:cmake_build_dir . "/CMakeCache.txt")
+  "Assert MyCMake#UpdateCompilerCommands()
+
+Execute (CMake configure good):
+  CMakeClearVars
+  let t:cmake_build_dir = "build/cmake_configure_good"
+  let t:cmake_source_dir = "tests/case/cmake_good"
+  let t:cmake_export_compile_commands = v:true
+
+Then:
+  Assert MyCMake#Configure()
+  Assert filereadable(t:cmake_build_dir . "/CMakeCache.txt")
+  "Assert MyCMake#UpdateCompilerCommands()

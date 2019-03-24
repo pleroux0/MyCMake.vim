@@ -1,0 +1,27 @@
+*MyCMake.vim.txt* My CMake helper
+
+===============================================================================
+CONTENTS                                                               *my.vim*
+
+    1. Intro ................................................... |my.vim-intro|
+    2. Requirements ..................................... |my.vim-requirements|
+    3. Usage ................................................... |my.vim-usage|
+    4. Licence ............................................... |my.vim-licence|
+===============================================================================
+1. Intro                                                         *my.vim-intro*
+
+Overview of plugin
+
+2. Requirements                                           *my.vim-requirements*
+
+What additional programs are required to run the plugin
+
+3. Usage                                                         *my.vim-usage*
+
+How to use the plugin. What functions does it give the user?
+
+4. Licence                                                     *my.vim-licence*
+
+This is open source make sure to include a licence
+
+vim:ft=help

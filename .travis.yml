@@ -1,0 +1,25 @@
+language: vim
+
+addons:
+  apt:
+    packages:
+      - neovim
+      - vim
+
+before_script: |
+  git clone https://github.com/junegunn/vader.vim.git
+
+env:
+  - VIM_COMMAND=vim
+  - VIM_COMMAND=neovim
+
+script: |
+  ${VIM_COMMAND} --version
+  ${VIM_COMMAND} -Nu <(cat << VIMRC
+  filetype off
+  set rtp+=vader.vim
+  set rtp+=.
+  set rtp+=after
+  filetype plugin indent on
+  syntax enable
+  VIMRC) -c 'Vader! tests/*' > /dev/null
