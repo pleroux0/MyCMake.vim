@@ -1,22 +1,26 @@
 " autoload/MyCMake.vim
 
+" v:false only defined somewhere after 7.4
+let s:True = 1
+let s:False = 0
+
 
 function! s:DeleteFile(file)
     " Delete a file
 
     if !filereadable(a:file)
         echo "Skipping deletetion of file that doesn't exist: " . a:file
-        return v:true
+        return s:True
     endif
 
     if !filewritable(a:file)
         echo "Can't delete file without write permissions: " . a:file
-        return v:false
+        return s:False
     endif
 
     call delete(a:file)
 
-    return v:true
+    return s:True
 endfunction
 
 
@@ -38,10 +42,10 @@ function! s:Execute(command)
 
     if v:shell_error
         echo 'Command exited with non-zero exit code'
-        return v:false
+        return s:False
     endif
 
-    return v:true
+    return s:True
 endfunction
 
 
@@ -128,11 +132,11 @@ endfunction
 
 function! MyCMake#IsCMakeProject()
     if !exists('t:cmake_source_dir')
-        return v:false
+        return s:False
     endif
 
     if !exists('t:cmake_build_dir')
-        return v:false
+        return s:False
     endif
 
     return filereadable(t:cmake_source_dir . '/CMakeLists.txt')
@@ -143,7 +147,7 @@ function! MyCMake#Configure()
     " Must be CMake project
     if !MyCMake#IsCMakeProject()
         echo 'Non-cmake project cannot be configured'
-        return v:false
+        return s:False
     endif
 
     " Create build dir if it does not exist
@@ -187,17 +191,17 @@ function! MyCMake#Clean()
     " Must be CMake project
     if !MyCMake#IsCMakeProject()
         echo 'Non-cmake project cannot be cleaned'
-        return v:false
+        return s:False
     endif
 
-    let l:out = v:true
+    let l:out = s:True
 
     if !s:DeleteFile(t:cmake_build_dir . '/CMakeCache.txt')
-        l:out = v:false
+        l:out = s:False
     endif
 
     if !s:DeleteFile(t:cmake_build_dir . '/CTestTestFile.txt')
-        l:out = v:false
+        l:out = s:False
     endif
 
     return l:out
