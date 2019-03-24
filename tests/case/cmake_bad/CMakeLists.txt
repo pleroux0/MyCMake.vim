@@ -1,1 +1,1 @@
-message(FATAL_ERROR "My fatal error")
+message(SEND_ERROR "My error")
