@@ -1,4 +1,6 @@
-language: vim
+language: minimal
+python:
+  - '3.6'
 
 matrix:
   include:
@@ -9,6 +11,8 @@ matrix:
         - sourceline: 'ppa:jonathonf/vim'
         packages:
         - vim
+    install: |
+      pip install cmake
     env:
     - VIM=vim
   - dist: xenial
@@ -18,6 +22,8 @@ matrix:
         - sourceline: 'ppa:neovim-ppa/stable'
         packages:
         - neovim
+    install: |
+      pip install cmake
     env:
     - VIM=nvim
   - os: osx
@@ -25,6 +31,7 @@ matrix:
       homebrew:
         packages:
         - vim
+        - cmake
     env:
     - VIM=vim
   - os: osx
@@ -32,20 +39,23 @@ matrix:
       homebrew:
         packages:
         - neovim
+        - cmake
     env:
     - VIM=nvim
   - os: windows
     install:
     - choco install vim
+    - choco install cmake
     env:
     - VIM=vim
   - os: windows
     install:
     - choco install neovim
+    - choco install cmake
     env:
     - VIM=nvim
 
-before_install: |
+after_install: |
   cmake --version
 
 before_script: |
