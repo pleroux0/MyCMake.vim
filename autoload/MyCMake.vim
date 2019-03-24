@@ -150,12 +150,26 @@ function! MyCMake#Configure()
     call mkdir(t:cmake_build_dir, 'p')
 
     " Execute CMake
+
+    " Only works for CMake version 3.13+
+    "let l:cmd += ['-S', fnameescape(t:cmake_source_dir)]
+    "let l:cmd += ['-B', fnameescape(t:cmake_build_dir)]
+
+    " Change to build directory
+    let l:cwd = getcwd()
+
+    " TODO: race condition if folder is deleted after IsCMakeProject
+    exec 'cd ' . t:cmake_build_dir
+
     let l:cmd = ['cmake']
-    let l:cmd += ['-S', fnameescape(t:cmake_source_dir)]
-    let l:cmd += ['-B', fnameescape(t:cmake_build_dir)]
+    let l:cmd += ['"' . l:cwd . '/' . t:cmake_source_dir . '"']
     let l:cmd += MyCMake#GetArguments()
 
-    return s:Execute(l:cmd)
+    let l:out = s:Execute(l:cmd)
+
+    exec 'cd ' . l:cwd
+
+    return l:out
 endfunction
 
 
