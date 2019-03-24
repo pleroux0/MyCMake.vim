@@ -45,6 +45,9 @@ matrix:
     env:
     - VIM=nvim
 
+before_install: |
+  cmake --version
+
 before_script: |
   git clone https://github.com/junegunn/vader.vim.git ~/.vim/plugged/vader.vim
 
