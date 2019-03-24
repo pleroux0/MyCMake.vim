@@ -9,13 +9,43 @@ matrix:
         - sourceline: 'ppa:jonathonf/vim'
         packages:
         - vim
+    env:
+    - VIM=vim
+  - dist: xenial
+    addons:
+      apt:
+        sources:
+        - sourceline: 'ppa:neovim-ppa/stable'
+        packages:
+        - neovim
+    env:
+    - VIM=nvim
   - os: macos
     addons:
       homebrew:
         packages:
         - vim
+    env:
+    - VIM=vim
+  - os: macos
+    addons:
+      homebrew:
+        packages:
+        - neovim
+    env:
+    - VIM=nvim
+  - os: windows
+    install:
+    - choco install vim
+    env:
+    - VIM=vim
+  - os: windows
+    install:
+    - choco install neovim
+    env:
+    - VIM=nvim
 
 before_script: |
   git clone https://github.com/junegunn/vader.vim.git ~/.vim/plugged/vader.vim
 
-script: ./scripts/run_tests.sh
+script: $VIM -Nu tests/mini.vimrc -Esc 'Vader! tests/*'
