@@ -47,4 +47,4 @@ after_install: |
 before_script: |
   git clone https://github.com/junegunn/vader.vim.git ~/.vim/plugged/vader.vim
 
-script: $VIM -Nu tests/mini.vimrc -Esc 'Vader! tests/*'
+script: $VIM -Nu tests/mini.vimrc -Esc 'Vader! tests/*' > /dev/null
