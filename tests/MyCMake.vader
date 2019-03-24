@@ -1,9 +1,8 @@
 " CMakeClearVars
 " --------------
 
-Before (Make execute silent):
+Before (Clear variables):
   CMakeClearVars
-  "let g:cmake_silent_execute=v:true
 
 Execute (Clear CMake variables):
   let t:cmake_build_dir="a"
