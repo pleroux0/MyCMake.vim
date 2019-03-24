@@ -10,7 +10,7 @@ function! s:DeleteFile(file)
     endif
 
     if !filewritable(a:file)
-        echo "Cannot delete file without write permissions: " . a:file
+        echo "Can't delete file without write permissions: " . a:file
         return v:false
     endif
 
@@ -31,9 +31,18 @@ function! s:ToString(string_or_list)
     endif
 endfunction
 
+
 function! s:Execute(command)
     " Execute command
-    exec ':!' . s:ToString(a:command)
+    if exists('t:cmake_silent_execute')
+      if t:cmake_silent_execute:
+        exec ':silent !' . s:ToString(a:command)
+      else
+        exec ':!' . s:ToString(a:command)
+      endif
+    else
+        exec ':!' . s:ToString(a:command)
+    endif
 
     if v:shell_error
         echo 'Command exited with non-zero exit code'
@@ -50,6 +59,7 @@ function! MyCMake#ClearVars()
     " CMake settings
     unlet! t:cmake_build_dir
     unlet! t:cmake_source_dir
+    unlet! t:cmake_silent_execute
 
     " CMake arguments
     unlet! t:cmake_toolchain
@@ -84,13 +94,13 @@ function! MyCMake#GetArguments()
     endif
 
     if exists('t:cmake_cxx_flags')
-        let l:flags = myutil#to_string(t:cmake_cxx_flags)
+        let l:flags = s:ToString(t:cmake_cxx_flags)
         let arguments += ["-DCMAKE_CXX_FLAGS=\'" . l:flags . "\'"]
         unlet l:flags
     endif
 
     if exists('t:cmake_c_flags')
-        let l:flags = myutil#to_string(t:cmake_c_flags)
+        let l:flags = s:ToString(t:cmake_c_flags)
         let arguments += ["-DCMAKE_C_FLAGS=\'" . l:flags . "\'"]
         unlet l:flags
     endif
