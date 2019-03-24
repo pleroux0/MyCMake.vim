@@ -3,12 +3,6 @@ language: minimal
 matrix:
   include:
   - dist: xenial
-    addons:
-      apt:
-        sources:
-        - sourceline: 'ppa:jonathonf/vim'
-        packages:
-        - vim
     env:
     - VIM=vim
   - dist: xenial
