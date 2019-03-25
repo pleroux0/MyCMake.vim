@@ -167,14 +167,14 @@ Then:
 
 " CI fails when running this test
 " ----------------------------
-"Execute (CMake configure bad):
-"  let t:cmake_build_dir = "build/cmake_configure_bad"
-"  let t:cmake_source_dir = "tests/case/cmake_bad"
+Execute (CMake configure bad):
+  let t:cmake_build_dir = "build/cmake_configure_bad"
+  let t:cmake_source_dir = "tests/case/cmake_bad"
 
-"Then:
-"  Assert !MyCMake#Configure()
-"  Assert filereadable(t:cmake_build_dir . "/CMakeCache.txt")
-"  "Assert MyCMake#UpdateCompilerCommands()
+Then:
+  Assert !MyCMake#Configure()
+  Assert filereadable(t:cmake_build_dir . "/CMakeCache.txt")
+  "Assert MyCMake#UpdateCompilerCommands()
 
 Execute (CMake configure good):
   let t:cmake_build_dir = "build/cmake_configure_good"
