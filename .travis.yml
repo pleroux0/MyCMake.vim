@@ -45,4 +45,4 @@ before_script: |
   git clone https://github.com/junegunn/vader.vim.git ~/.vim/plugged/vader.vim
   cmake --version
 
-script: $VIM -Nu tests/mini.vimrc -c 'Vader! tests/*' > /dev/null
+script: $VIM -Nu tests/mini.vimrc -Esc 'Vader! tests/*'
