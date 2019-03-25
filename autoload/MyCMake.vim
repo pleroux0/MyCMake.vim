@@ -38,7 +38,17 @@ endfunction
 
 function! s:Execute(command)
     " Execute command
-    exec ':!' . s:ToString(a:command)
+    if exists('t:cmake_silent_execute')
+      if t:cmake_silent_execute
+        let l:exec = ':silent !'
+      else
+        let l:exec = ':!'
+      endif
+    else
+      let l:exec = ':!'
+    endif
+
+    exec l:exec . s:ToString(a:command)
 
     if v:shell_error
         echo 'Command exited with non-zero exit code'
@@ -55,6 +65,7 @@ function! MyCMake#ClearVars()
     " CMake settings
     unlet! t:cmake_build_dir
     unlet! t:cmake_source_dir
+    unlet! t:cmake_silent_execute
 
     " CMake arguments
     unlet! t:cmake_toolchain

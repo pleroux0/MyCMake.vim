@@ -3,10 +3,12 @@
 
 Before (Clear variables):
   CMakeClearVars
+  let t:cmake_silent_execute=v:true
 
 Execute (Clear CMake variables):
   let t:cmake_build_dir="a"
   let t:cmake_source_dir="a"
+  let t:cmake_silent_execute="a"
 
   let t:cmake_toolchain="a"
   let t:cmake_cxx_compiler="a"
@@ -23,6 +25,7 @@ Execute (Clear CMake variables):
 Then (Vars shouldn't exist):
   Assert !exists("t:cmake_build_dir")
   Assert !exists("t:cmake_source_dir")
+  Assert !exists("t:cmake_silent_execute")
 
   Assert !exists("t:cmake_toolchain")
   Assert !exists("t:cmake_cxx_compiler")
