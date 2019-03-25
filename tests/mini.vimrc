@@ -1,4 +1,6 @@
 filetype off
 set runtimepath+=.
 set runtimepath+=~/.vim/plugged/vader.vim
-syntax off
+set rtp+=after
+filetype plugin indent on
+syntax enable
