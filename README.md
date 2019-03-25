@@ -1,5 +1,7 @@
 # MyCMake.vim
 
+[![Build Status](https://dev.azure.com/pleroux0/vim/_apis/build/status/pleroux0.MyCMake.vim?branchName=master)](https://dev.azure.com/pleroux0/vim/_build/latest?definitionId=9&branchName=master)
+
 ## Installation
 
 Use your plugin manager of choice.
